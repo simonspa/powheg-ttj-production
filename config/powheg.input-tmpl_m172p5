@@ -2,7 +2,7 @@
 bornktmin  5d0    ! (default 0d0) kt min at Born level for jet in ttbar+jet 
 topmass 172.5d0
 !topwidth 1.31d0
-R_jet 0.4d0
+R_jet 0.5d0
 ptmin_jet 50d0
 topdecaymode 22000 ! Number of ttbar decay products for e,mu,tau,u,c
 

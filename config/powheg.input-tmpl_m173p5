@@ -27,6 +27,11 @@ lhans2  10800         ! pdf set for hadron 2 (LHA numbering) -> CT10
 ! To be set only if using different pdf sets for the two incoming hadrons
 ! QCDLambda5  0.25 ! for not equal pdf sets 
 
+! hdamp parameter
+#withdamp    1      ! (default 0, do not use) use Born-zero damping factor
+hdamp 172.5
+dampreweight 1 ! h_damp reweighting (mt/2, mt, mt*2)
+
 ! Parameters to allow or not the use of stored data
 use-old-grid    1 ! if 1 use old grid if file pwggrids.dat is present (<> 1 regenerate)
 use-old-ubound  1 ! if 1 use norm of upper bounding function stored in pwgubound.dat, if present; <> 1 regenerate

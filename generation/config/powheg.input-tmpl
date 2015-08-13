@@ -44,7 +44,7 @@ iymax    3     ! <= 100, number of y subdivision when computing the upper bounds
 xupbound 2d0   ! increase upper bound for radiation generation
 
 ! OPTIONAL PARAMETERS
-withnegweights 1    ! (default 0) if on (1) use negative weights
+withnegweights 0    ! (default 0) if on (1) use negative weights
 #renscfact  1d0   ! (default 1d0) ren scale factor: muren  = muref * renscfact 
 #facscfact  1d0   ! (default 1d0) fac scale factor: mufact = muref * facscfact 
 bornsuppfact     100d0   ! (default 0d0)  mass param for Born suppression factor (generation cut) If < 0 suppfact = 1

@@ -1,9 +1,9 @@
 ! ttbar+jet production
 bornktmin  5d0    ! (default 0d0) kt min at Born level for jet in ttbar+jet 
-topmass 172.5d0
+topmass ##TOPMASS## ! 172.5d0
 !topwidth 1.31d0
 R_jet 0.5d0
-ptmin_jet 50d0
+ptmin_jet 40d0
 topdecaymode 22000 ! Number of ttbar decay products for e,mu,tau,u,c
 
 
@@ -34,7 +34,7 @@ use-old-ubound  1 ! if 1 use norm of upper bounding function stored in pwgubound
 ncall1 100000  ! number of calls for initializing the integration grid
 itmx1    5     ! number of iterations for initializing the integration grid
 ncall2 100000  ! number of calls for computing the integral and finding upper bound
-itmx2    1     ! number of iterations for computing the integral and finding upper bound
+itmx2    5     ! number of iterations for computing the integral and finding upper bound
 foldcsi   1    ! number of folds on csi integration
 foldy     1    ! number of folds on  y  integration
 foldphi   1    ! number of folds on phi integration
@@ -43,11 +43,16 @@ icsimax  3     ! <= 100, number of csi subdivision when computing the upper boun
 iymax    3     ! <= 100, number of y subdivision when computing the upper bounds
 xupbound 2d0   ! increase upper bound for radiation generation
 
+! hdamp parameter
+#withdamp    1      ! (default 0, do not use) use Born-zero damping factor
+#hdamp 172.5
+#dampreweight 1 ! h_damp reweighting (mt/2, mt, mt*2)
+
 ! OPTIONAL PARAMETERS
-withnegweights 0    ! (default 0) if on (1) use negative weights
-#renscfact  1d0   ! (default 1d0) ren scale factor: muren  = muref * renscfact 
-#facscfact  1d0   ! (default 1d0) fac scale factor: mufact = muref * facscfact 
-bornsuppfact     100d0   ! (default 0d0)  mass param for Born suppression factor (generation cut) If < 0 suppfact = 1
+withnegweights 1  ! (default 0) if on (1) use negative weights
+renscfact  0.5d0   ! (default 1d0) ren scale factor: muren  = muref * renscfact 
+facscfact  0.5d0   ! (default 1d0) fac scale factor: mufact = muref * facscfact 
+#bornsuppfact     100d0   ! (default 0d0)  mass param for Born suppression factor (generation cut) If < 0 suppfact = 1
 #bornonly   1      ! (default 0) if 1 do Born only
 #smartsig   0      ! (default 1) remember equal amplitudes (0 do not remember)
 #withsubtr  0      ! (default 1) subtract real counterterms (0 do not subtract)
@@ -55,7 +60,7 @@ bornsuppfact     100d0   ! (default 0d0)  mass param for Born suppression factor
 #ptsqmin    0.8    ! (default 0.8 GeV) minimum pt for generation of radiation
 #charmthr   1.5    ! (default 1.5 GeV) charm treshold for gluon splitting 
 #bottomthr  5.0    ! (default 5.0 GeV) bottom treshold for gluon splitting
-testplots  1      ! (default 0, do not) do NLO and PWHG distributions
+#testplots  1      ! (default 0, do not) do NLO and PWHG distributions
 #hfact    100d0    ! (default no dumping factor) dump factor for high-pt radiation: > 0 dumpfac=h**2/(pt2+h**2)
 #testsuda  1       ! (default 0, do not test) test Sudakov form factor
 #radregion 1       ! (default all regions) only generate radiation in the selected singular region  
@@ -75,4 +80,3 @@ manyseeds 1       ! Used to perform multiple runs with different random
 
 #iupperisr 1 ! (default 1) choice of ISR upper bounding functional form 
 #iupperfsr 2 ! (default 2) choice of FSR upper bounding functional form 
-

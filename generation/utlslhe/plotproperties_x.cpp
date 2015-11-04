@@ -33,6 +33,7 @@ double* evtprop;
 double** partprop;
 ifstream ifile;
 TFile* ofile;
+TH1D * weights;
 vector<int> plotid;
 map<pair<int,string>, TH1D*> mhprops;
 typedef map<pair<int,string>, TH1D*>::iterator iter;
@@ -54,25 +55,33 @@ int main(int argc, char** argv) {
   for (int i=0;i<50;i++) partprop[i]=new double[50];    
   evtprop=new double[5]; 
 
-  ifile.open(input.c_str());
   ofile =new TFile("LHEparticleproperties.root","RECREATE");
   ini_histos();
 
   string line;
+
+  for(int i = 1; i <= 50; i++) {
+    TString file;
+    if(i < 10) file.Form("%s-000%i.lhe", input.c_str(), i);
+    else file.Form("%s-00%i.lhe", input.c_str(), i);
+    cout << "Reading from \"" << file << "\"..." << endl;
+
+    ifile.open(file);
+    //check that input file is readable 
+    if (!ifile.is_open()) { cout << "File not found." << endl; return 0; }
     
-  //check that input file is readable 
-  if (!ifile.is_open()) { cout << "File not found." << endl; return 0; }
-    
-  skip_header();
-  read_event();
-  while (!ifile.eof()) {
+    skip_header();
     read_event();
-  }
-  //normalize histos for bin width
-  nrm_histos();
+    while (!ifile.eof()) {
+      read_event();
+    }
+    //normalize histos for bin width
+    nrm_histos();
     
-  // close all files 
-  ifile.close();
+    // close all files 
+    ifile.close();
+  }
+
   ofile->Write();
   ofile->Close();
     
@@ -97,6 +106,9 @@ void read_event() {
   ss<<line;
   ss>>npart>>evtprop[0]>>evtprop[1]>>evtprop[2]>>evtprop[3]>>evtprop[4];
   ss.clear();
+
+  weights->Fill(evtprop[1]);
+
   for (int ipart=0;ipart<npart;ipart++) {
     getline(ifile,line);
     ss<<line;
@@ -154,6 +166,7 @@ void ini_histos() {
     ss.str(""); ss<<"mdir_"<<plotid[i]; 
     mhprops[make_pair(plotid[i],"mdir")]  = new TH1D(ss.str().c_str(),"",60,160.,190.);
   }
+  weights = new TH1D("weights","",2000,-1200.,1200.);
 }
 
 void nrm_histos() {

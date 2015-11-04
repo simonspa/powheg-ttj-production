@@ -16,6 +16,6 @@ for i in {1..50} #NJOBS
 do
   paddedjob=`echo ${i} | awk '{printf("%04s\n", $1)}'`
   sed -e "s/##JOBNUMBER##/${paddedjob}/g" -e "s/##TOPMASS##/${topmass}/g" -e "s/##RUNNAME##/${run}/g" < ../config/${gennode} > cmsgenNode${i}.sh
-  #qsub cmsgenNode${i}.sh
+  qsub cmsgenNode${i}.sh
 done
 

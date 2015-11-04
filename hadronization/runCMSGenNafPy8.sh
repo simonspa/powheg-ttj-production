@@ -17,6 +17,7 @@ for i in {1..250} #NJOBS
 do
   paddedjob=`echo ${i} | awk '{printf("%04s\n", $1)}'`
   sed -e "s/##JOBNUMBER##/${paddedjob}/g" -e "s/##MASS##/${mass}/g" -e "s/##TOPMASS##/${topmass}/g" -e "s/##RUNNAME##/${run}/g" < ../config/Hadronizer_Tune4C_emissionVeto1_LHE_pythia8.py-tmpl > Hadronizer_Tune4C_emissionVeto1_LHE_pythia8-${paddedjob}.py
+  #sed -e "s/##JOBNUMBER##/${paddedjob}/g" -e "s/##MASS##/${mass}/g" -e "s/##TOPMASS##/${topmass}/g" -e "s/##RUNNAME##/${run}/g" < ../config/Hadronizer_TuneCUEP8_emissionVeto1_LHE_pythia8.py-tmpl > Hadronizer_TuneCUEP8_emissionVeto1_LHE_pythia8-${paddedjob}.py
   sed -e "s/##JOBNUMBER##/${paddedjob}/g" -e "s/##TOPMASS##/${topmass}/g" -e "s/##RUNNAME##/${run}/g" < ../config/${gennode} > cmsgenNode${i}.sh
   qsub cmsgenNode${i}.sh
 done

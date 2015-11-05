@@ -45,14 +45,14 @@ xupbound 2d0   ! increase upper bound for radiation generation
 
 ! hdamp parameter
 #withdamp    1      ! (default 0, do not use) use Born-zero damping factor
-#hdamp 172.5
-#dampreweight 1 ! h_damp reweighting (mt/2, mt, mt*2)
+hdamp 172.5
+dampreweight 1 ! h_damp reweighting (mt/2, mt, mt*2)
 
 ! OPTIONAL PARAMETERS
 withnegweights 1  ! (default 0) if on (1) use negative weights
-renscfact  0.5d0   ! (default 1d0) ren scale factor: muren  = muref * renscfact 
-facscfact  0.5d0   ! (default 1d0) fac scale factor: mufact = muref * facscfact 
-#bornsuppfact     100d0   ! (default 0d0)  mass param for Born suppression factor (generation cut) If < 0 suppfact = 1
+#renscfact  1d0   ! (default 1d0) ren scale factor: muren  = muref * renscfact 
+#facscfact  1d0   ! (default 1d0) fac scale factor: mufact = muref * facscfact 
+bornsuppfact     100d0   ! (default 0d0)  mass param for Born suppression factor (generation cut) If < 0 suppfact = 1
 #bornonly   1      ! (default 0) if 1 do Born only
 #smartsig   0      ! (default 1) remember equal amplitudes (0 do not remember)
 #withsubtr  0      ! (default 1) subtract real counterterms (0 do not subtract)

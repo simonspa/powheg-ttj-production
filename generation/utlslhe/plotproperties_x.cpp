@@ -38,7 +38,6 @@ vector<int> plotid;
 map<pair<int,string>, TH1D*> mhprops;
 typedef map<pair<int,string>, TH1D*>::iterator iter;
 
-
 int main(int argc, char** argv) {
  
   // interpret comand line arguments
@@ -60,15 +59,14 @@ int main(int argc, char** argv) {
 
   string line;
 
-  for(int i = 1; i <= 50; i++) {
+  for(int i = 1; i <= 250; i++) {
     TString file;
-    if(i < 10) file.Form("%s-000%i.lhe", input.c_str(), i);
-    else file.Form("%s-00%i.lhe", input.c_str(), i);
+    file.Form("%s-%04i.lhe", input.c_str(), i);
     cout << "Reading from \"" << file << "\"..." << endl;
 
     ifile.open(file);
     //check that input file is readable 
-    if (!ifile.is_open()) { cout << "File not found." << endl; return 0; }
+    if (!ifile.is_open()) { cout << "File not found." << endl; continue; }
     
     skip_header();
     read_event();

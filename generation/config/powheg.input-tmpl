@@ -45,7 +45,7 @@ xupbound 2d0   ! increase upper bound for radiation generation
 
 ! hdamp parameter
 #withdamp    1      ! (default 0, do not use) use Born-zero damping factor
-hdamp 172.5
+hdamp ##TOPMASS##
 dampreweight 1 ! h_damp reweighting (mt/2, mt, mt*2)
 
 ! OPTIONAL PARAMETERS

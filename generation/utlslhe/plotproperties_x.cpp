@@ -34,6 +34,7 @@ double** partprop;
 ifstream ifile;
 TFile* ofile;
 TH1D * weights;
+TH1D * scale;
 vector<int> plotid;
 map<pair<int,string>, TH1D*> mhprops;
 typedef map<pair<int,string>, TH1D*>::iterator iter;
@@ -106,6 +107,7 @@ void read_event() {
   ss.clear();
 
   weights->Fill(evtprop[1]);
+  scale->Fill(evtprop[2]);
 
   for (int ipart=0;ipart<npart;ipart++) {
     getline(ifile,line);
@@ -165,6 +167,7 @@ void ini_histos() {
     mhprops[make_pair(plotid[i],"mdir")]  = new TH1D(ss.str().c_str(),"",60,160.,190.);
   }
   weights = new TH1D("weights","",2000,-1200.,1200.);
+  scale = new TH1D("scale","",2000,-1200.,1200.);
 }
 
 void nrm_histos() {

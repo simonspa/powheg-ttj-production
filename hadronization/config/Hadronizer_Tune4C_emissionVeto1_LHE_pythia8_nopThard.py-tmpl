@@ -1,0 +1,151 @@
+# Auto generated configuration file
+# using: 
+# Revision: 1.20 
+# Source: /local/reps/CMSSW/CMSSW/Configuration/Applications/python/ConfigBuilder.py,v 
+# with command line options: Configuration/Generator/python/SevenTeV/Hadronizer_Tune4C_7TeV_emissionVeto1_LHE_pythia8_cff.py -s GEN --conditions auto:mc --filein /store/lhe/12821/ascii_dump.lhe --datatier GEN-SIM-RAW --eventcontent RAWSIM -n 1000 --no_exec
+import FWCore.ParameterSet.Config as cms
+
+import os
+import random
+import time
+
+process = cms.Process("SKIM")
+
+process = cms.Process('GEN')
+
+random.seed(time.time())
+rnd1 = random.randint(0, 100000000)
+#rnd2 = random.randint(0, 100000000)
+
+#job_index = int(os.getenv("JOBINDEX"))
+#seed_gen = 100*job_index+rnd1
+#seed_vertex = 100*job_index+rnd2
+
+
+
+#dataset = os.getenv("LHESET")
+#files = file(dataset).read().split("\n")
+
+#files_per_job = int(os.getenv("FILESPERJOB"))
+#file_start = 1+files_per_job*(job_index)
+#file_end = files_per_job*(job_index+1)
+#if file_end > len(files):
+#    file_end = len(files)
+
+#files_scoped = files[file_start:file_end]
+#print "Files to read in: ", files_scoped
+process.source = cms.Source("LHESource",
+                            #fileNames = cms.untracked.vstring(*files_scoped),
+                            fileNames = cms.untracked.vstring('file:/nfs/dust/cms/user/spanns/montecarlo-generation/generation/##RUNNAME##_m##TOPMASS##/pwgevents-##JOBNUMBER##.lhe'),
+                            skipBadFiles = cms.untracked.bool(True)
+                    )
+
+# import of standard configurations
+process.load('FWCore.MessageService.MessageLogger_cfi')
+process.load('Configuration.StandardSequences.MagneticField_38T_cff')
+process.load('Configuration.StandardSequences.Geometry_cff')
+process.load('Configuration.Generator.Pythia8CommonSettings_cfi') 
+process.load('PhysicsTools.HepMCCandAlgos.genParticles_cfi') 
+process.load('RecoJets.Configuration.GenJetParticles_cff') 
+process.load('RecoJets.Configuration.RecoGenJets_cff') 
+process.load('Configuration.StandardSequences.Services_cff') 
+
+#process.load('PhysicsTools.HepMCCandAlgos.genParticles_cfi') 
+#process.load('RecoJets.Configuration.GenJetParticles_cff') 
+#process.load('RecoJets.Configuration.RecoGenJets_cff') 
+#process.load('Configuration.StandardSequences.Services_cff')
+#process.load('SimGeneral.HepPDTESSource.pythiapdt_cfi')
+#process.load('FWCore.MessageService.MessageLogger_cfi')
+#process.load('Configuration.EventContent.EventContent_cff')
+#process.load('SimGeneral.MixingModule.mixNoPU_cfi')
+#process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
+#process.load('Configuration.StandardSequences.MagneticField_38T_cff')
+#process.load('Configuration.StandardSequences.Generator_cff')
+#process.load('IOMC.EventVertexGenerators.VtxSmearedRealistic8TeVCollision_cfi')
+#process.load('GeneratorInterface.Core.genFilterSummary_cff')
+#process.load('Configuration.StandardSequences.EndOfProcess_cff')
+#process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
+
+# Input source
+process.maxEvents = cms.untracked.PSet(
+    #input = cms.untracked.int32(int(os.getenv('MAXEVENTS')))
+    input = cms.untracked.int32(10000)
+)
+
+from RecoJets.JetProducers.PFJetParameters_cfi import *
+from RecoJets.JetProducers.AnomalousCellParameters_cfi import *
+
+#############   Random Number Service ################
+process.RandomNumberGeneratorService = cms.Service('RandomNumberGeneratorService',
+    generator = cms.PSet(
+    initialSeed = cms.untracked.uint32(1234),
+    engineName = cms.untracked.string('TRandom3')
+    )
+)
+
+process.generator = cms.EDFilter("Pythia8HadronizerFilter",
+    pythiaPylistVerbosity = cms.untracked.int32(1),
+    filterEfficiency = cms.untracked.double(1.0),
+    pythiaHepMCVerbosity = cms.untracked.bool(True),
+    comEnergy = cms.double(8000.0),
+    maxEventsToPrint = cms.untracked.int32(0),
+    PythiaParameters = cms.PSet(
+        pythia8PowhegEmissionVetoSettings = cms.vstring(
+        'POWHEG:veto=1',
+        'POWHEG:pTdef=1',
+        'POWHEG:emitted=0',
+        'POWHEG:pTemt=0',
+        #'POWHEG:pThard=2', #userhook = 2
+        'POWHEG:nFinal=3',
+        'POWHEG:vetoCount=100',
+        'SpaceShower:pTmaxMatch=2',
+        'TimeShower:pTmaxMatch=2',
+        ),
+        processParameters = cms.vstring(
+        'Main:timesAllowErrors    = 10000',
+        'ParticleDecays:limitTau0 = on',
+        'ParticleDecays:tauMax = 10',
+        'Tune:pp=14',
+        'Tune:ee=7',
+	'6:m0 = ##MASS##',
+        'MultipartonInteractions:pT0Ref=2.4024',
+        'MultipartonInteractions:ecmPow=0.25208',
+        'MultipartonInteractions:expPow=1.6',
+        #'PartonLevel:MPI=off',
+        #'HadronLevel:all=off',
+        #'PartonLevel:ISR = off',
+        #'PartonLevel:FSR = off',
+	#
+	# Alternative values for Alpha_S:
+	#'SpaceShower:alphaSvalue=0.1273',
+	#'TimeShower:alphaSvalue=0.1273',
+       ),
+     parameterSets = cms.vstring('pythia8PowhegEmissionVetoSettings','processParameters')
+  )
+)
+
+
+#############   output module ########################
+process.slim = cms.OutputModule("PoolOutputModule",
+    outputCommands = cms.untracked.vstring(
+        'keep *'),
+    SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('skimPath')),
+                                #fileName = cms.untracked.string(os.getenv('OUTPUT'))
+     fileName = cms.untracked.string('dilepton_m##TOPMASS##-##JOBNUMBER##.root')
+)
+
+
+############# slimming the PFJet collection by raising the pt cut #################
+#process.ak7GenJets.jetPtMin = cms.double(30.0)
+#process.ak5GenJets.jetPtMin = cms.double(30.0)
+
+
+##process.skimPath=cms.Path(process.generator * process.genParticles * process.genParticlesForJets * process.ak7GenJets * process.filter)
+process.skimPath=cms.Path(process.generator * process.genParticles * process.genParticlesForJets * process.ak7GenJets * process.ak5GenJets)
+
+process.p = cms.EndPath(process.slim)
+
+#############   Format MessageLogger #################
+process.MessageLogger.cerr.FwkReport.reportEvery = 1000
+
+  
